@@ -52,7 +52,7 @@ const login = async (request, response) => {
 		console.log(foundUser);
 
 		if (!foundUser) {
-			return response.json({ message: 'Email or Password incorrect' });
+			return response.json({ message: 'User does not exist' });
 		}
 
 		const match = await bcrypt.compare(
