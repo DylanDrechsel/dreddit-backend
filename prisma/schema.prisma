@@ -19,6 +19,7 @@ model User {
   role    Role     @default(USER)
   posts   Post[]
   profile Profile?
+  comments Comment[]
 }
 
 model Profile {
@@ -36,6 +37,18 @@ model Post {
   author     User        @relation(fields: [authorId], references: [id])
   authorId   Int
   categories Category[]  @relation(references: [id])
+  posts   Comment[]
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content String
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int
+  post Post @relation(fields: [postId], references: [id])
+  postId Int
 }
 
 model Category {
