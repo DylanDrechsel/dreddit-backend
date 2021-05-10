@@ -31,6 +31,30 @@ router.get('/liked', async (req, res) => {
     res.json({ likedLikes })
 })
 
+// GET ALL LIKES AND UNLIKES FROM A POST (PASS THROUGH BOOLEAN VARIBLE "wantLikes")
+router.get('/:postId', async (req, res) => {
+    const likes = await db.like.findMany({
+        where: {
+            postId: Number(req.params.postId)
+        }
+    })
+
+    const typeOfLikes = []
+
+    for (let i = 0; i < likes.length; i++) {
+        if (req.body.wantLikes === true) {
+            if (likes[i].value === 1) {
+                typeOfLikes.push(likes[i])
+            }
+        }
+        else if (likes[i].value === 0) {
+            typeOfLikes.push(likes[i])
+        }     
+    }
+    
+    res.json({ typeOfLikes })
+})
+
 // CREATE LIKE
 router.post("/create/:postId", async (req, res) => {
     const createdLike = await db.like.create({
