@@ -11,15 +11,69 @@ generator client {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  age     Int?
-  password String
-  role    Role     @default(USER)
-  posts   Post[]
-  profile Profile?
-  comments Comment[]
+  id         Int     @id @default(autoincrement())
+  role       Role    @default(USER)
+  firstname  String
+  lastname   String
+  username   String  @unique
+  email      String  @unique
+  password   String
+
+  // user profile relation - One to One
+  profile    Profile?
+
+  // all posts user has made - One to Many
+  posts      Post[]
+
+  // all comments user has made - One to Many
+  comments   Comment[]
+}
+
+model Post {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now())
+  title     String
+
+  // published attribution will allow saving post and posting later
+  published  Boolean      @default(false)
+
+  // category for type of post
+  categories Category[]  @relation(references: [id])
+
+  // Model Relationship (One to Many // User to Post)
+  // store userId inside table for prisma to relate to post
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+
+  // One to Many // Post to Comments
+  comments  Comment[]
+
+  // One to Many // Post to Likes
+  likes     Like[]
+}
+
+model Comment {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  content    String
+
+  author     User        @relation(fields: [authorId], references: [id])
+  authorId   Int
+
+  posts      Post        @relation(fields: [postId], references: [id])
+  postId     Int
+}
+
+model Like {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  value      Int
+
+  posts      Post        @relation(fields: [postId], references: [id])
+  postId     Int
 }
 
 model Profile {
@@ -29,27 +83,6 @@ model Profile {
   userId  Int
 }
 
-model Post {
-  id         Int         @id @default(autoincrement())
-  createdAt  DateTime    @default(now())
-  title      String
-  published  Boolean     @default(false)
-  author     User        @relation(fields: [authorId], references: [id])
-  authorId   Int
-  categories Category[]  @relation(references: [id])
-  posts   Comment[]
-}
-
-model Comment {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content String
-  author User @relation(fields: [authorId], references: [id])
-  authorId Int
-  post Post @relation(fields: [postId], references: [id])
-  postId Int
-}
 
 model Category {
   id    Int     @id @default(autoincrement())
