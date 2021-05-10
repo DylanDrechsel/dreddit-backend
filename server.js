@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// // Controller(s)
+// Controller(s)
 app.use('/users', authRequired, userRoutes);
 app.use('/register', register);
 app.use('/login', login);
