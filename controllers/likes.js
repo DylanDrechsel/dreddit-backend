@@ -9,6 +9,7 @@ router.get('/', async (req, res) => {
             posts: true
         }
     })
+
     res.json({ likes })
 })
 
@@ -67,20 +68,33 @@ router.post("/create/:postId", async (req, res) => {
             }
         }
     })
+
     res.json({ message: 'Like was registered', like: createdLike })
 })
 
-// UNLIKE POST
+// LIKE/UNLIKE POST
 router.put('/:id', async (req, res) => {
-    const updatedLiked = await db.like.update({
-        where: {
-            id: Number(req.params.id)
-        },
-        data: {
-            value: 0
-        }
-    })
-    res.json({ message: "the user's like was updated", like: updatedLiked })
+    if (req.body.liked === true) {
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: 0
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+    } else {
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: 1
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+    }
 })
 
 export default router
