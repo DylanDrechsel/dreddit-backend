@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import userRoutes from './controllers/users.js';
 import postRoutes from './controllers/posts.js';
+import commentRoutes from './controllers/comments.js'
 import authRequired from './middleware/authRequired.js';
 import { register, login, logout } from './controllers/auth.js';
 
@@ -24,6 +25,7 @@ app.use('/register', register);
 app.use('/login', login);
 app.use('/logout', logout);
 app.use('/posts', authRequired, postRoutes);
+app.use('/comments', authRequired, commentRoutes)
 
 app.get('/', (req, res) => {
 	res.send('Welcome to SQL');

@@ -21,11 +21,20 @@ router.get('/', async (req, res) => {
     res.json({ posts })
 })
 
-// GET ALL UNPUBLISHED POST
+// GET USER UNPUBLISHED POST
 router.use('/unpublished', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
-            auther: req.username
+            authorId: req.currentUser
+        },
+        include: {
+            author: true,
+            comments: {
+                include: {
+                    author: true
+                }
+            },
+            likes: true
         }
     })
     res.json({ posts })
