@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 router.use('/unpublished', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
-            authorId: req.currentUser
+            published: false
         },
         include: {
             author: true,
