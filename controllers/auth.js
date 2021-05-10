@@ -18,7 +18,10 @@ const register = async (request, response) => {
 		});
 
 		if (foundUser) {
-			response.json({ message: 'the User already exists', user: foundUser });
+			response.json({
+				message: 'the User already exists',
+				user: foundUser
+			});
 		}
 
 		const salt = await bcrypt.genSalt(10);
@@ -27,12 +30,19 @@ const register = async (request, response) => {
 		request.body.password = hash;
 		// create user with req.body and hashed password
 		const createdUser = await db.user.create({
-			data: { ...request.body, password: hash },
+			data: {
+				...request.body,
+				password: hash
+			},
 		});
 
 		return response
 			.status(201)
-			.json({ status: 201, message: 'success', createdUser });
+			.json({
+				status: 201,
+				message: 'success',
+				createdUser
+			});
 	} catch (error) {
 		console.log(error);
 		return response.status(500).json({
@@ -46,13 +56,17 @@ const register = async (request, response) => {
 const login = async (request, response) => {
 	try {
 		const foundUser = await db.user.findUnique({
-			where: { email: request.body.email },
+			where: {
+				email: request.body.email
+			},
 		});
 
 		console.log(foundUser);
 
 		if (!foundUser) {
-			return response.json({ message: 'User does not exist' });
+			return response.json({
+				message: 'User does not exist'
+			});
 		}
 
 		const match = await bcrypt.compare(
@@ -61,7 +75,9 @@ const login = async (request, response) => {
 		);
 
 		if (!match) {
-			return response.json({ message: 'Email or Password incorrect' });
+			return response.json({
+				message: 'Email or Password incorrect'
+			});
 		}
 
 		const isMatch = await bcrypt.compare(
@@ -71,12 +87,10 @@ const login = async (request, response) => {
 
 		if (isMatch) {
 			//TODO create a json web token
-			const signedJwt = jwt.sign(
-				{
+			const signedJwt = jwt.sign({
 					id: foundUser.id,
 				},
-				process.env.JWT_SECRET,
-				{
+				process.env.JWT_SECRET, {
 					expiresIn: '1d',
 				}
 			);
@@ -110,4 +124,8 @@ const logout = (request, response) => {
 	// TODO: Remove the JWT via react.
 };
 
-export { register, login, logout };
+export {
+	register,
+	login,
+	logout
+};

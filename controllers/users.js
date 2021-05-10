@@ -3,29 +3,38 @@ import db from '../utils/generatePrisma.js';
 const router = express.Router();
 
 // SHOW CURRENT LOGGED IN  ROUTE 
-router.get('/verify', async function(request, response){
+router.get('/verify', async (req, res) => {
     const user = await db.user.findUnique({
         where: {
-            id: Number(request.currentUser)
+            id: Number(req.currentUser)
         },
     });
     // json response for testing
-    response.json({user})
+    res.json({
+        user
+    })
 })
 
 // GET ALL USERS
 router.get('/', async (req, res) => {
-		const users = await db.user.findMany({
-            include: {
-                posts: {
-                    select: {
-                        title: true
-                    }
+    const users = await db.user.findMany({
+        include: {
+            posts: {
+                select: {
+                    title: true
+                }
+            },
+            comments: {
+                select: {
+                    content: true
                 }
             }
-        });
-		res.json({ users });
-	});
+        }
+    });
+    res.json({
+        users
+    });
+});
 
 // GET USER BY ID
 router.get('/:id', async (req, res) => {
@@ -38,10 +47,17 @@ router.get('/:id', async (req, res) => {
                 select: {
                     title: true
                 }
+            },
+            comments: {
+                select: {
+                    content: true
+                }
             }
         }
     })
-    res.json({ user });
+    res.json({
+        user
+    });
 })
 
 // CREATE USER ROUTES
@@ -49,7 +65,10 @@ router.post('/create', async (req, res) => {
     const createdUser = await db.user.create({
         data: request.body
     })
-    res.json({ message: 'The User was created', user: createdUser });
+    res.json({
+        message: 'The User was created',
+        user: createdUser
+    });
 })
 
 // UPDATE USER
@@ -60,7 +79,10 @@ router.put('/edit', async (req, res) => {
         },
         data: req.body,
     });
-    res.json({message: "the User has been updated", user: updatedUser })
+    res.json({
+        message: "the User has been updated",
+        user: updatedUser
+    })
 })
 
 // DELETE USER AND ALL THEIR CONTENT
@@ -70,7 +92,7 @@ router.delete('/delete', async (req, res) => {
             authorId: Number(req.currentUser)
         }
     });
-    
+
     const deleteUserPosts = await db.post.deleteMany({
         where: {
             authorId: Number(req.currentUser)
@@ -84,11 +106,11 @@ router.delete('/delete', async (req, res) => {
     })
 
     res.json({
-			message: 'the user and their posts have been deleted',
-			user: deletedUser,
-			posts: deleteUserPosts,
-			comments: deleteUserComments,
-		});
+        message: 'the user and their posts have been deleted',
+        user: deletedUser,
+        posts: deleteUserPosts,
+        comments: deleteUserComments,
+    });
 })
 
 
