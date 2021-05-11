@@ -72,7 +72,7 @@ router.post("/create/:postId", async (req, res) => {
     res.json({ message: 'Like was registered', like: createdLike })
 })
 
-// LIKE/UNLIKE POST
+// LIKE/UNLIKE POST (PASS THROUGH BOOLEAN VARIBLE "liked")
 router.put('/:id', async (req, res) => {
     if (req.body.liked === true) {
         const updatedLiked = await db.like.update({
