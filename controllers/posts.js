@@ -21,8 +21,8 @@ router.get('/', async (req, res) => {
     res.json({ posts })
 })
 
-// GET USER UNPUBLISHED POST
-router.use('/unpublished', async (req, res) => {
+// GET ALL UNPUBLISHED POST
+router.use('/allunpublished', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
             published: false
@@ -40,19 +40,40 @@ router.use('/unpublished', async (req, res) => {
     res.json({ posts })
 })
 
-// GET ALL USERS POSTS (FOR PROFILE SHOW POST PAGE)
-router.get("/:authorId", async (req, res) => {
+// GET USER UNPUBLISHED POST
+router.use('/unpublished', async (req, res) => {
     const posts = await db.post.findMany({
-        select: {
-            title: true,
-            categories: true,
-            author: true,
-            comments: true
-        },
         where: {
-            authorId: Number(req.params.authorId)
+            authorId: Number(req.currentUser),
+            published: false
+        },
+        include: {
+            author: true,
+            comments: {
+                include: {
+                    author: true
+                }
+            },
+            likes: true
         }
     })
+    res.json({ posts })
+})
+
+// GET ALL USERS POSTS (FOR PROFILE SHOW POST PAGE)
+router.get("/published", async (req, res) => {
+    const posts = await db.post.findMany({
+			select: {
+				title: true,
+				categories: true,
+				author: true,
+				comments: true,
+			},
+			where: {
+				authorId: Number(req.currentUser),
+                published: true
+			},
+		});
     res.json({ posts })
 })
 

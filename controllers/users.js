@@ -99,6 +99,12 @@ router.delete('/delete', async (req, res) => {
         }
     });
 
+    const deletedLikes = await db.like.deleteMany({
+        where: {
+            authorId: Number(req.currentUser)
+        }
+    })
+
     const deletedUser = await db.user.delete({
         where: {
             id: Number(req.currentUser)
@@ -110,6 +116,7 @@ router.delete('/delete', async (req, res) => {
         user: deletedUser,
         posts: deleteUserPosts,
         comments: deleteUserComments,
+        likes: deletedLikes
     });
 })
 
