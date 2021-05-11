@@ -5,6 +5,7 @@ import userRoutes from './controllers/users.js';
 import postRoutes from './controllers/posts.js';
 import commentRoutes from './controllers/comments.js'
 import likeRoutes from './controllers/likes.js'
+import profileRoutes from './controllers/profile.js'
 import authRequired from './middleware/authRequired.js';
 import { register, login, logout } from './controllers/auth.js';
 
@@ -28,6 +29,7 @@ app.use('/logout', logout);
 app.use('/posts', authRequired, postRoutes);
 app.use('/comments', authRequired, commentRoutes)
 app.use('/likes', authRequired, likeRoutes);
+app.use('/profile', authRequired, profileRoutes);
 
 app.get('/', (req, res) => {
 	res.send('Welcome to SQL');

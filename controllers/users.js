@@ -28,6 +28,11 @@ router.get('/', async (req, res) => {
                 select: {
                     content: true
                 }
+            },
+            profile: {
+                select: {
+                    bio: true
+                }
             }
         }
     });
@@ -51,6 +56,11 @@ router.get('/:id', async (req, res) => {
             comments: {
                 select: {
                     content: true
+                }
+            },
+            profile: {
+                select: {
+                    bio: true
                 }
             }
         }
