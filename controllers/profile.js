@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     const profiles = await db.profile.findMany({
         select: {
+            id: true,
             bio: true,
             user: true
         }

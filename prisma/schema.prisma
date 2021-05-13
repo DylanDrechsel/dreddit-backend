@@ -18,6 +18,7 @@ model User {
   username   String  @unique
   email      String  @unique
   password   String
+  image      String?
 
   // user profile relation - One to One
   profile    Profile?
@@ -27,6 +28,9 @@ model User {
 
   // all comments user has made - One to Many
   comments   Comment[]
+
+  // all likes the users has made - One to Many
+  likes      Like[]
 }
 
 model Post {
@@ -34,6 +38,7 @@ model Post {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now())
   title      String
+  image      String?
 
   // published attribution will allow saving post and posting later
   published  Boolean      @default(false)
@@ -50,7 +55,7 @@ model Post {
   comments  Comment[]
 
   // One to Many // Post to Likes
-  likes     Like[]
+  likes     Like[] 
 }
 
 model Comment {
@@ -74,11 +79,15 @@ model Like {
 
   posts      Post        @relation(fields: [postId], references: [id])
   postId     Int
+
+  author     User        @relation(fields: [authorId], references: [id])
+  authorId   Int
 }
 
 model Profile {
   id      Int     @id @default(autoincrement())
   bio     String
+  image   String?
   user    User    @relation(fields: [userId], references: [id])
   userId  Int
 }

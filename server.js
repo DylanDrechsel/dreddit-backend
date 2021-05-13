@@ -8,6 +8,7 @@ import likeRoutes from './controllers/likes.js'
 import profileRoutes from './controllers/profile.js'
 import authRequired from './middleware/authRequired.js';
 import { register, login, logout } from './controllers/auth.js';
+// import fileUpload from 'express-fileupload'
 
 const db = new prisma.PrismaClient({
 	log: ['info', 'warn'],
@@ -20,6 +21,7 @@ const port = 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+// app.use(fileUpload());
 
 // Controller(s)
 app.use('/users', authRequired, userRoutes);
