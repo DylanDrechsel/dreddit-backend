@@ -65,7 +65,12 @@ router.post("/create/:postId", async (req, res) => {
                 connect: {
                     id: Number(req.params.postId)
                 }
-            }
+            },
+            author: {
+                connect: {
+                    id: req.currentUser
+                }
+            },
         }
     })
 
@@ -80,7 +85,17 @@ router.put('/:id', async (req, res) => {
                 id: Number(req.params.id)
             },
             data: {
-                value: 0
+                value: 1
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+    } else if (req.body.liked === false) {
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: -1
             }
         })
         res.json({ message: "the user's like was updated", like: updatedLiked })
@@ -90,7 +105,7 @@ router.put('/:id', async (req, res) => {
                 id: Number(req.params.id)
             },
             data: {
-                value: 1
+                value: 0
             }
         })
         res.json({ message: "the user's like was updated", like: updatedLiked })

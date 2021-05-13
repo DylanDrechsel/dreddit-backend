@@ -68,6 +68,7 @@ router.get("/published", async (req, res) => {
 				categories: true,
 				author: true,
 				comments: true,
+                likes: true
 			},
 			where: {
 				authorId: Number(req.currentUser),
