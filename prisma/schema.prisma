@@ -101,7 +101,7 @@ model Category {
 
 model Image {
   id Int @id @default(autoincrement())
-  fieldname String @unique
+  fieldname String?
   path String
   mimetype   String
   size Int
