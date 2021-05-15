@@ -2,6 +2,9 @@ import express from 'express';
 import db from '../utils/generatePrisma.js';
 const router = express.Router();
 
+// import multer from 'multer';
+// const upload = multer({ dest: 'uploads/' });
+
 // GET ALL PUBLISHED POST
 router.get('/', async (req, res) => {
     const posts = await db.post.findMany({
@@ -79,9 +82,9 @@ router.get("/published", async (req, res) => {
 })
 
 // CREATE POST
-router.post('/create', async (req, res) => {
+router.post('/create', /* upload.single('image'), */ async (req, res) => {
     const createdPost = await db.post.create({
-        data: {...req.body, authorId: req.currentUser}
+        data: {...req.body, authorId: req.currentUser/* , image: req.file */}
     })
     res.json({ message: 'Created Post', post: createdPost });
 })
