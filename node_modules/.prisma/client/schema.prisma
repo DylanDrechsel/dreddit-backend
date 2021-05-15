@@ -38,7 +38,7 @@ model Post {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now())
   title      String
-  image      String?
+  image      Json?
 
   // published attribution will allow saving post and posting later
   published  Boolean      @default(false)
@@ -97,6 +97,18 @@ model Category {
   id    Int     @id @default(autoincrement())
   name  String
   posts Post[]  @relation(references: [id])
+}
+
+model Image {
+  id Int @id @default(autoincrement())
+  fieldname String @unique
+  path String
+  mimetype   String
+  size Int
+  originalname String
+  encoding   String
+  destination String
+  filename   String
 }
 
 enum Role {
