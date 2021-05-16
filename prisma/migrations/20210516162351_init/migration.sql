@@ -21,8 +21,8 @@ CREATE TABLE "Post" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT NOT NULL,
-    "image" TEXT,
     "published" BOOLEAN NOT NULL DEFAULT false,
+    "category" TEXT NOT NULL,
     "authorId" INTEGER NOT NULL,
 
     PRIMARY KEY ("id")
@@ -63,17 +63,20 @@ CREATE TABLE "Profile" (
 );
 
 -- CreateTable
-CREATE TABLE "Category" (
+CREATE TABLE "Image" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "fieldname" TEXT,
+    "path" TEXT NOT NULL,
+    "mimetype" TEXT NOT NULL,
+    "size" INTEGER NOT NULL,
+    "originalname" TEXT NOT NULL,
+    "encoding" TEXT NOT NULL,
+    "destination" TEXT NOT NULL,
+    "filename" TEXT NOT NULL,
+    "postId" INTEGER NOT NULL,
+    "authorId" INTEGER NOT NULL,
 
     PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_CategoryToPost" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -84,12 +87,6 @@ CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_userId_unique" ON "Profile"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_CategoryToPost_AB_unique" ON "_CategoryToPost"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_CategoryToPost_B_index" ON "_CategoryToPost"("B");
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -110,7 +107,7 @@ ALTER TABLE "Like" ADD FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELET
 ALTER TABLE "Profile" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_CategoryToPost" ADD FOREIGN KEY ("A") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Image" ADD FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_CategoryToPost" ADD FOREIGN KEY ("B") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Image" ADD FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -27,7 +27,8 @@ router.get('/', async (req, res) => {
                     author: true
                 }
             },
-            likes: true
+            likes: true,
+            image: true
         }
     })
     res.json({ posts })
@@ -81,7 +82,8 @@ router.get("/published", async (req, res) => {
 				categories: true,
 				author: true,
 				comments: true,
-                likes: true
+                likes: true,
+                image: true
 			},
 			where: {
 				authorId: Number(req.currentUser),
@@ -113,6 +115,11 @@ router.post(
                 posts: {
                     connect: {
                         id: createdPost.id
+                    }
+                },
+                author: {
+                    connect: {
+                        id: req.currentUser
                     }
                 }
             }
