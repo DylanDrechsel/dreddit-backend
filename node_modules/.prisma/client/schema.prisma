@@ -38,7 +38,6 @@ model Post {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now())
   title      String
-  image      Json?
 
   // published attribution will allow saving post and posting later
   published  Boolean      @default(false)
@@ -56,6 +55,9 @@ model Post {
 
   // One to Many // Post to Likes
   likes     Like[] 
+
+  // One to One // Post to Image
+  image    Image[]
 }
 
 model Comment {
@@ -109,6 +111,9 @@ model Image {
   encoding   String
   destination String
   filename   String
+
+  posts      Post        @relation(fields: [postId], references: [id])
+  postId     Int
 }
 
 enum Role {

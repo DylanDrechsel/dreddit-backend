@@ -1,9 +1,18 @@
 import express from 'express';
 import db from '../utils/generatePrisma.js';
+import multer from 'multer';
 const router = express.Router();
 
-// import multer from 'multer';
-// const upload = multer({ dest: 'uploads/' });
+const upload = multer({
+	storage: multer.diskStorage({
+		destination: function (req, file, cb) {
+			cb(null, 'image/');
+		},
+		filename: function (req, file, cb) {
+			cb(null, new Date().valueOf() + '_' + file.originalname);
+		},
+	}),
+});
 
 // GET ALL PUBLISHED POST
 router.get('/', async (req, res) => {
@@ -37,7 +46,8 @@ router.use('/allunpublished', async (req, res) => {
                     author: true
                 }
             },
-            likes: true
+            likes: true,
+            image: true
         }
     })
     res.json({ posts })
@@ -82,12 +92,35 @@ router.get("/published", async (req, res) => {
 })
 
 // CREATE POST
-router.post('/create', /* upload.single('image'), */ async (req, res) => {
+router.post('/create', async (req, res) => {
     const createdPost = await db.post.create({
-        data: {...req.body, authorId: req.currentUser/* , image: req.file */}
+        data: {...req.body, authorId: req.currentUser}
     })
     res.json({ message: 'Created Post', post: createdPost });
 })
+
+// CREATE POST WITH IMAGE
+router.post(
+	'/create/image',
+	upload.single('image'),
+	async (req, res) => {
+		const createdPost = await db.post.create({
+			data: { ...req.body, authorId: req.currentUser},
+		});
+
+        const createdImage = await db.image.create({
+            data: { ...req.file,
+                posts: {
+                    connect: {
+                        id: createdPost.id
+                    }
+                }
+            }
+        })
+
+		res.json({ message: 'Created Post', post: createdPost, image: createdImage });
+	}
+);
 
 // UPDATE POST
 // ADD AUTH FOR THIS
