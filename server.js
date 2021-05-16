@@ -33,7 +33,8 @@ app.use('/comments', authRequired, commentRoutes);
 app.use('/likes', authRequired, likeRoutes);
 app.use('/profile', authRequired, profileRoutes);
 
-app.get('/image/:filename', authRequired, async (req, res) => {
+// Remove auth required so "img src" would return the image
+app.get('/image/:filename', /* authRequired, */ async (req, res) => {
 	const { filename } = req.params;
 	const dirname = path.resolve();
 	const fullfilepath = path.join(dirname, 'image/' + filename);
