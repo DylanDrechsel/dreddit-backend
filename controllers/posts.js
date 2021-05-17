@@ -83,7 +83,7 @@ router.get("/published", async (req, res) => {
 				author: true,
 				comments: true,
                 likes: true,
-                image: true
+                image: true,
 			},
 			where: {
 				authorId: Number(req.currentUser),

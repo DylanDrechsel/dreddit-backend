@@ -12,6 +12,19 @@ router.get('/', async (req, res) => {
     res.json({ comments })
 })
 
+// GET ALL COMMENTS BY POST ID
+router.get('/:id', async (req, res) => {
+    const comments = await db.comment.findMany({
+        where: {
+           postId: Number(req.params.id)
+        },
+        include: {
+            author: true
+        }
+    })
+    res.json({ comments })
+})
+
 // CREATE COMMENT
 router.post('/create/:postId', async (req, res) => {
     const createdComment = await db.comment.create({
