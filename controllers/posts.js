@@ -44,7 +44,8 @@ router.use('/allunpublished', async (req, res) => {
             author: true,
             comments: {
                 include: {
-                    author: true
+                    author: true,
+                    childComments: true
                 }
             },
             likes: true,
@@ -65,7 +66,8 @@ router.use('/unpublished', async (req, res) => {
             author: true,
             comments: {
                 include: {
-                    author: true
+                    author: true,
+                    childComments: true
                 }
             },
             likes: true

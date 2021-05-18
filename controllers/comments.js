@@ -19,7 +19,8 @@ router.get('/:id', async (req, res) => {
            postId: Number(req.params.id)
         },
         include: {
-            author: true
+            author: true,
+            childComments: true
         }
     })
     res.json({ comments })
