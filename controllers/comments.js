@@ -6,7 +6,18 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     const comments = await db.comment.findMany({
         include: {
-            author: true
+            author: true,
+            childComments: {
+                select: {
+                    id: true,
+                    content: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    postId: true,
+                    author: true,
+
+                }
+            }
         }
     })
     res.json({ comments })
@@ -26,7 +37,7 @@ router.get('/:id', async (req, res) => {
     res.json({ comments })
 })
 
-// CREATE COMMENT
+// CREATE COMMENT ON POST
 router.post('/create/:postId', async (req, res) => {
     const createdComment = await db.comment.create({
         data: {
@@ -44,6 +55,31 @@ router.post('/create/:postId', async (req, res) => {
         }
     })
     res.json({ message: 'Created Comment', comment: createdComment })
+})
+
+// CREATE COMMENT ON COMMENT
+router.post('/create/child/:postId/:commentId', async (req, res) => {
+    const createdComment = await db.comment.create({
+        data: {
+            content: req.body.content,
+            author: {
+                connect: {
+                    id: req.currentUser
+                }
+            },
+            posts: {
+                connect: {
+                    id: Number(req.params.postId)
+                }
+            },
+            parentComment: {
+                connect: {
+                    id: Number(req.params.commentId)
+                }
+            }
+        }
+    })
+    res.json({ message: 'Created Comment', comment: createdComment });
 })
 
 // UPDATE COMMENT
