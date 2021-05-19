@@ -98,7 +98,11 @@ router.get("/published", async (req, res) => {
 // CREATE POST
 router.post('/create', async (req, res) => {
     const createdPost = await db.post.create({
-        data: {...req.body, authorId: req.currentUser}
+        data: {...req.body, author: {
+            connect: {
+                id: req.currentUser
+            }
+        }}
     })
     res.json({ message: 'Created Post', post: createdPost });
 })
@@ -146,12 +150,20 @@ router.put('/:id', async (req, res) => {
 // DELETE POST
 // ADD AUTH FOR THIS
 router.delete('/:id', async (req, res) => {
+    const deletedPostLikes = await db.like.deleteMany({
+        where: {
+            posts: {
+                id: Number(req.params.id)
+            }
+        }
+    })
+
     const deletedPost = await db.post.delete({
         where: {
             id: Number(req.params.id)
         }
     })
-    res.json({ message: "the post has been deleted", post: deletedPost })
+    res.json({ message: "the post has been deleted", post: deletedPost, likes: deletedPostLikes })
 })
 
 export default router;

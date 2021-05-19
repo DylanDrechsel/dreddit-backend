@@ -63,7 +63,7 @@ model Post {
   likes     Like[] 
 
   // One to One // Post to Image
-  image    Image[]
+  image    Image?
 }
 
 model Comment {
