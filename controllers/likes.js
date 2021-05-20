@@ -40,23 +40,23 @@ router.get('/:postId', async (req, res) => {
         }
     })
 
-    const typeOfLikes = []
+    // const typeOfLikes = []
 
-    for (let i = 0; i < likes.length; i++) {
-        if (req.body.wantLikes === true) {
-            if (likes[i].value === 1) {
-                typeOfLikes.push(likes[i])
-            }
-        }
-        else if (likes[i].value === 0) {
-            typeOfLikes.push(likes[i])
-        }     
-    }
+    // for (let i = 0; i < likes.length; i++) {
+    //     if (req.body.wantLikes === true) {
+    //         if (likes[i].value === 1) {
+    //             typeOfLikes.push(likes[i])
+    //         }
+    //     }
+    //     else if (likes[i].value === 0) {
+    //         typeOfLikes.push(likes[i])
+    //     }     
+    // }
     
-    res.json({ typeOfLikes })
+    res.json({ likes })
 })
 
-// CREATE LIKE
+// CREATE UPVOTE
 router.post("/create/:postId", async (req, res) => {
     const createdLike = await db.like.create({
         data: {
@@ -77,19 +77,31 @@ router.post("/create/:postId", async (req, res) => {
     res.json({ message: 'Like was registered', like: createdLike })
 })
 
+// CREATE DOWNVOTE
+router.post("/create/dislike/:postId", async (req, res) => {
+    const createdDislike = await db.like.create({
+        data: {
+            value: -1,
+            posts: {
+                connect: {
+                    id: Number(req.params.postId)
+                }
+            },
+            author: {
+                connect: {
+                    id: req.currentUser
+                }
+            },
+        }
+    })
+    res.json({ message: 'Like was registered', like: createdDislike });
+})
+
 // LIKE/UNLIKE POST (PASS THROUGH BOOLEAN VARIBLE "liked")
 router.put('/:id', async (req, res) => {
-    if (req.body.liked === true) {
-        const updatedLiked = await db.like.update({
-            where: {
-                id: Number(req.params.id)
-            },
-            data: {
-                value: 1
-            }
-        })
-        res.json({ message: "the user's like was updated", like: updatedLiked })
-    } else if (req.body.liked === false) {
+    console.log(req.body.liked)
+
+    if (req.body.liked === 'upvoteToDownvote') {
         const updatedLiked = await db.like.update({
             where: {
                 id: Number(req.params.id)
@@ -99,7 +111,56 @@ router.put('/:id', async (req, res) => {
             }
         })
         res.json({ message: "the user's like was updated", like: updatedLiked })
-    } else {
+    } else if (req.body.liked === 'downvoteTrue') {
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: 1
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+    } else if (req.body.liked === 'upvoteTrue'){
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: 0
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+    } else if (req.body.liked === 'upvoteRemoved'){
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: 1
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+    } else if (req.body.liked === 'downvoteRemoved'){
+        const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: 0
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })} else if (req.body.liked === 'downvoteAdd') {
+            const updatedLiked = await db.like.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                value: -1
+            }
+        })
+        res.json({ message: "the user's like was updated", like: updatedLiked })
+        } else {
         const updatedLiked = await db.like.update({
             where: {
                 id: Number(req.params.id)

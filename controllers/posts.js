@@ -158,12 +158,28 @@ router.delete('/:id', async (req, res) => {
         }
     })
 
+    const deletePostComments = await db.comment.deleteMany({
+        where: {
+            posts: {
+                id: Number(req.params.id) 
+            }
+        }
+    })
+
+    const deletedPostImage = await db.image.deleteMany({
+        where: {
+            posts: {
+                id: Number(req.params.id) 
+            }
+        }
+    })
+
     const deletedPost = await db.post.delete({
         where: {
             id: Number(req.params.id)
         }
     })
-    res.json({ message: "the post has been deleted", post: deletedPost, likes: deletedPostLikes })
+    res.json({ message: "the post has been deleted", post: deletedPost, likes: deletedPostLikes, comments: deletePostComments, image: deletedPostImage })
 })
 
 export default router;
