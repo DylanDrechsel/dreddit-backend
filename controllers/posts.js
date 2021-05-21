@@ -34,6 +34,26 @@ router.get('/', async (req, res) => {
     res.json({ posts })
 })
 
+// GET POST BY ID
+router.get('/:id', async (req, res) => {
+    const post = await db.post.findUnique({
+        where: {
+            id: Number(req.params.id)
+        },
+        include: {
+            author: true,
+            comments: {
+                include: {
+                    author: true
+                }
+            },
+            likes: true,
+            image: true
+        }
+    })
+    res.json({ post })
+})
+
 // GET ALL UNPUBLISHED POST
 router.use('/allunpublished', async (req, res) => {
     const posts = await db.post.findMany({
