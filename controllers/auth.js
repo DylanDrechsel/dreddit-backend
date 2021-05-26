@@ -1,6 +1,6 @@
-import express from 'express';
+// import express from 'express';
 import bcrypt from 'bcryptjs';
-import cors from 'cors';
+// import cors from 'cors';
 import db from '../utils/generatePrisma.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -60,7 +60,7 @@ const login = async (request, response) => {
 			},
 		});
 
-		console.log(foundUser);
+		// console.log(foundUser);
 
 		if (!foundUser) {
 			return response.json({
