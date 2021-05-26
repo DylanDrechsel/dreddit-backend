@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
                     updatedAt: true,
                     postId: true,
                     author: true,
-
                 }
             }
         }
@@ -58,7 +57,7 @@ router.post('/create/:postId', async (req, res) => {
 })
 
 // CREATE COMMENT ON COMMENT
-router.post('/create/child/:postId/:commentId', async (req, res) => {
+router.post('/create/child/:commentId', async (req, res) => {
     const createdComment = await db.comment.create({
         data: {
             content: req.body.content,
@@ -67,11 +66,11 @@ router.post('/create/child/:postId/:commentId', async (req, res) => {
                     id: req.currentUser
                 }
             },
-            posts: {
+            /* posts: {
                 connect: {
                     id: Number(req.params.postId)
                 }
-            },
+            }, */
             parentComment: {
                 connect: {
                     id: Number(req.params.commentId)

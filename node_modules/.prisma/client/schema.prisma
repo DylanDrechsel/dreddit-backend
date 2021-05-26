@@ -75,8 +75,8 @@ model Comment {
   author     User        @relation(fields: [authorId], references: [id])
   authorId   Int
 
-  posts      Post        @relation(fields: [postId], references: [id])
-  postId     Int
+  posts      Post?        @relation(fields: [postId], references: [id])
+  postId     Int?
 
   parentCommentId Int?
   parentComment   Comment? @relation("ParentChild", fields: [parentCommentId], references: [id])
