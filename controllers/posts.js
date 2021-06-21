@@ -132,8 +132,12 @@ router.post(
 	'/create/image',
 	upload.single('image'),
 	async (req, res) => {
-		const createdPost = await db.post.create({
-			data: { ...req.body, authorId: req.currentUser},
+        console.log(req.body);
+        console.log(req.file)
+
+        console.log(req.currentUser)
+        const createdPost = await db.post.create({
+            data: { ...req.body, authorId: 1 /* req.currentUser */},
 		});
 
         const createdImage = await db.image.create({
@@ -145,7 +149,7 @@ router.post(
                 },
                 author: {
                     connect: {
-                        id: req.currentUser
+                        id: 1 /* req.currentUser */
                     }
                 }
             }
