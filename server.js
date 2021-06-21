@@ -28,7 +28,7 @@ app.use('/users', authRequired, userRoutes);
 app.use('/register', register);
 app.use('/login', login);
 app.use('/logout', logout);
-app.use('/posts', authRequired, postRoutes);
+app.use('/posts', /* authRequired, */ postRoutes);
 app.use('/comments', authRequired, commentRoutes);
 app.use('/likes', authRequired, likeRoutes);
 app.use('/profile', authRequired, profileRoutes);
