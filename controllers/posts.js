@@ -132,12 +132,12 @@ router.post(
 	'/create/image',
 	upload.single('image'),
 	async (req, res) => {
-        console.log(req.body);
+        console.log(req.body.title);
         console.log(req.file)
-
         console.log(req.currentUser)
+
         const createdPost = await db.post.create({
-            data: { ...req.body, authorId: 1 /* req.currentUser */},
+            data: { title: req.body.title, category: req.body.category, authorId: req.currentUser },
 		});
 
         const createdImage = await db.image.create({
@@ -149,7 +149,7 @@ router.post(
                 },
                 author: {
                     connect: {
-                        id: 1 /* req.currentUser */
+                        id: req.currentUser 
                     }
                 }
             }
@@ -158,6 +158,35 @@ router.post(
 		res.json({ message: 'Created Post', post: createdPost, image: createdImage });
 	}
 );
+
+// TESTING JUST IMAGE UPLOAD
+router.post(
+    '/create/single/image',
+    upload.single('image'),
+
+    async (req, res) => {
+        console.log(req.body.image);
+        console.log(req.file)
+        console.log(req.currentUser)
+
+        const createdImage = await db.image.create({
+            data: { ...req.file,
+                author: {
+                    connect: {
+                        id: 2 /* req.currentUser */
+                    }
+                },
+                posts: {
+                    connect: {
+                        id: 94
+                    }
+                }
+            }
+        })
+
+		res.json({ message: 'Created Post', image: createdImage });
+	}
+)
 
 // UPDATE POST
 // ADD AUTH FOR THIS
