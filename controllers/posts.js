@@ -132,12 +132,18 @@ router.post(
 	'/create/image',
 	upload.single('image'),
 	async (req, res) => {
-        console.log(req.body.title);
+        console.log(req.body);
         console.log(req.file)
         console.log(req.currentUser)
 
+        let bool = false
+
+        if (req.body.published === 'true') {
+            bool = true
+        }
+
         const createdPost = await db.post.create({
-            data: { title: req.body.title, category: req.body.category, authorId: req.currentUser },
+            data: { title: req.body.title, category: req.body.category, published: bool, authorId: req.currentUser },
 		});
 
         const createdImage = await db.image.create({
