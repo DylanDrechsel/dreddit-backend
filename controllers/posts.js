@@ -76,7 +76,9 @@ router.use('/allunpublished', async (req, res) => {
 })
 
 // GET USER UNPUBLISHED POST
-router.use('/unpublished', async (req, res) => {
+router.get('/user/unpublished', async (req, res) => {
+    console.log(req.currentUser)
+
     const posts = await db.post.findMany({
         where: {
             authorId: Number(req.currentUser),
@@ -97,11 +99,11 @@ router.use('/unpublished', async (req, res) => {
 })
 
 // GET ALL USERS POSTS (FOR PROFILE SHOW POST PAGE)
-router.get("/published", async (req, res) => {
+router.get("/user/published", async (req, res) => {
     const posts = await db.post.findMany({
 			select: {
 				title: true,
-				categories: true,
+				category: true,
 				author: true,
 				comments: true,
                 likes: true,
@@ -132,10 +134,6 @@ router.post(
 	'/create/image',
 	upload.single('image'),
 	async (req, res) => {
-        console.log(req.body);
-        console.log(req.file)
-        console.log(req.currentUser)
-
         let bool = false
 
         if (req.body.published === 'true') {
