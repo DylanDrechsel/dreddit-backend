@@ -102,6 +102,7 @@ router.get('/user/unpublished', async (req, res) => {
 router.get("/user/published", async (req, res) => {
     const posts = await db.post.findMany({
 			select: {
+                id: true,
 				title: true,
 				category: true,
 				author: true,
