@@ -196,6 +196,24 @@ router.post(
 	}
 )
 
+// UPDATE IMAGE POST
+router.put('/:postId/:imageId', upload.single('image'), async (req, res) => {
+	const updatedPost = await db.post.update({
+		where: {
+			id: Number(req.params.postId),
+		},
+		data: req.body,
+	});
+
+    const updatedImage = await db.image.update({
+        where: {
+            id: Number(req.params.imageId)
+        },
+        data: {...req.file}
+    })
+	res.json({ message: 'the post has been updated', post: updatedPost, image: updatedImage/* createdImage, deletedImage: deletedPostImage */ });
+});
+
 // UPDATE POST
 // ADD AUTH FOR THIS
 router.put('/:id', async (req, res) => {
