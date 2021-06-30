@@ -109,7 +109,9 @@ router.get("/user/published", async (req, res) => {
 				comments: true,
                 likes: true,
                 image: true,
-                createdAt: true
+                createdAt: true,
+                content: true,
+                published: true
 			},
 			where: {
 				authorId: Number(req.currentUser),
