@@ -208,7 +208,12 @@ router.put('/:postId/:imageId', upload.single('image'), async (req, res) => {
 		where: {
 			id: Number(req.params.postId),
 		},
-		data: {...req.body, published: bool},
+		data: {
+			title: req.body.title,
+			category: req.body.category,
+			published: bool,
+			authorId: req.currentUser,
+		},
 	});
 
     const updatedImage = await db.image.update({

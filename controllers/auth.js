@@ -9,17 +9,29 @@ dotenv.config();
 
 const register = async (request, response) => {
 	try {
-		const foundUser = await db.user.findUnique({
+		const foundUserEmail = await db.user.findUnique({
 			where: {
 				email: request.body.email,
-				/* username: request.body.username */
 			},
 		});
 
-		if (foundUser) {
+		if (foundUserEmail) {
 			response.json({
-				message: 'the User already exists',
-				user: foundUser
+				message: 'the email address already exists',
+				/* user: foundUserEmail */
+			});
+		}
+
+		const foundUsername = await db.user.findUnique({
+			where: {
+				username: request.body.username
+			},
+		});
+
+		if (foundUsername) {
+			response.json({
+				message: 'the username already exists',
+				/* user: foundUsername, */
 			});
 		}
 
@@ -64,7 +76,7 @@ const login = async (request, response) => {
 
 		if (!foundUser) {
 			return response.json({
-				message: 'User does not exist'
+				message: 'Incorrect Email'
 			});
 		}
 
@@ -75,7 +87,7 @@ const login = async (request, response) => {
 
 		if (!match) {
 			return response.json({
-				message: 'Email or Password incorrect'
+				message: 'Incorrect Password'
 			});
 		}
 
@@ -85,7 +97,6 @@ const login = async (request, response) => {
 		);
 
 		if (isMatch) {
-			//TODO create a json web token
 			const signedJwt = jwt.sign({
 					id: foundUser.id,
 				},
