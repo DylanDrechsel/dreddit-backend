@@ -8,6 +8,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const register = async (request, response) => {
+	console.log(request.body.email)
+
 	try {
 		const foundUserEmail = await db.user.findUnique({
 			where: {

@@ -13,8 +13,8 @@ generator client {
 model User {
   id         Int     @id @default(autoincrement())
   role       Role    @default(USER)
-  firstname  String
-  lastname   String
+  firstname  String?
+  lastname   String?
   username   String  @unique
   email      String  @unique
   password   String

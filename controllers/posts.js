@@ -92,7 +92,8 @@ router.get('/user/unpublished', async (req, res) => {
                     childComments: true
                 }
             },
-            likes: true
+            likes: true,
+            image: true,
         }
     })
     res.json({ posts })
