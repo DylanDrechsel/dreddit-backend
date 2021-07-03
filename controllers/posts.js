@@ -14,13 +14,42 @@ const upload = multer({
 	}),
 });
 
-// GET ALL PUBLISHED POST
+// GET 'NEW' ALL PUBLISHED POST
 router.get('/', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
             published: true
         },
+        orderBy: {
+            createdAt: 'desc'
+        },
+        
         include: {
+            author: true,
+            comments: {
+                include: {
+                    author: true
+                }
+            },
+            likes: true,
+            image: true
+        }
+    })
+    res.json({ posts })
+})
+
+// GET ALL "TOP" PUBLISHED POST
+router.get('/top', async (req, res) => {
+    const posts = await db.post.findMany({
+        where: {
+            published: true
+        },
+        include: {
+            likes: {
+                orderBy: {
+                    value: 'asc'
+                },
+            },
             author: true,
             comments: {
                 include: {
