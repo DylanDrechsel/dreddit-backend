@@ -107,6 +107,10 @@ const login = async (request, response) => {
 				}
 			);
 
+			response.cookie("token", signedJwt, {
+				httpOnly: true
+			})
+
 			return response.status(200).json({
 				status: 200,
 				message: 'Success',

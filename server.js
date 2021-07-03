@@ -9,6 +9,7 @@ import profileRoutes from './controllers/profile.js';
 import authRequired from './middleware/authRequired.js';
 import { register, login, logout } from './controllers/auth.js';
 import multer from 'multer';
+import cookieParser from 'cookie-parser'
 import path from 'path';
 
 const db = new prisma.PrismaClient({
@@ -21,7 +22,8 @@ const port = 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cookieParser())
 
 // Controller(s)
 app.use('/users', authRequired, userRoutes);

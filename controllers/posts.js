@@ -23,7 +23,6 @@ router.get('/', async (req, res) => {
         orderBy: {
             createdAt: 'desc'
         },
-        
         include: {
             author: true,
             comments: {
@@ -39,6 +38,7 @@ router.get('/', async (req, res) => {
 })
 
 // GET ALL "TOP" PUBLISHED POST
+// TESTING
 router.get('/top', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
