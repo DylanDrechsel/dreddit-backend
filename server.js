@@ -11,6 +11,9 @@ import { register, login, logout } from './controllers/auth.js';
 import multer from 'multer';
 import cookieParser from 'cookie-parser'
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const db = new prisma.PrismaClient({
 	log: ['info', 'warn'],
@@ -47,6 +50,6 @@ app.get('/', (req, res) => {
 	res.send('Welcome to SQL');
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
 	console.log(`listening on ${port}`);
 });
