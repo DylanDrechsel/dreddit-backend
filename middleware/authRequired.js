@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// WORKING TOKEN AUTH
+// HEROKU DOESNT ALLOW COOKIES TO BE SET
 const tokenAuthRequired = (req, res, next) => {
 	const token = req.cookies.token
 	console.log(token)
@@ -42,4 +44,4 @@ const authRequired = (req, res, next) => {
 	}
 };
 
-export default tokenAuthRequired; authRequired;
+export default /* tokenAuthRequired; */ authRequired;
