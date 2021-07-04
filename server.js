@@ -29,7 +29,7 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(cookieParser())
 
 // Controller(s)
-app.use('/users', authRequired, userRoutes);
+app.use('/users', /* authRequired, */ userRoutes);
 app.use('/register', register);
 app.use('/login', login);
 app.use('/logout', logout);
