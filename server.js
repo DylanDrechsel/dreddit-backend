@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
 	cors({
 		credentials: true,
-		origin: 'http://peaceful-crater-lake-16323.herokuapp.com/',
+		origin: 'http://peaceful-crater-lake-16323.herokuapp.com',
 	})
 );
 app.use(cookieParser())
