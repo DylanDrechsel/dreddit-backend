@@ -113,6 +113,9 @@ router.get('/user/unpublished', async (req, res) => {
             authorId: Number(req.currentUser),
             published: false
         },
+        orderBy: {
+            createdAt: 'desc'
+        },
         include: {
             author: true,
             comments: {
