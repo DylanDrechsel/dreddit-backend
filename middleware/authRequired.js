@@ -5,6 +5,8 @@ dotenv.config();
 
 const authRequired = (req, res, next) => {
 	const token = req.cookies.token
+	console.log(req)
+	console.log(req.cookies)
 	console.log(token)
 	// console.log(bearerHeader);
 
