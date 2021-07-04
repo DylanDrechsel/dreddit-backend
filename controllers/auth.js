@@ -103,7 +103,7 @@ const login = async (request, response) => {
 					id: foundUser.id,
 				},
 				process.env.JWT_SECRET, {
-					expiresIn: '15m',
+					expiresIn: '1d',
 				}
 			);
 
