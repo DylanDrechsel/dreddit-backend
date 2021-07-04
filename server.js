@@ -25,11 +25,16 @@ const port = 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(
+	cors({
+		credentials: true,
+		origin: 'https://peaceful-crater-lake-16323.herokuapp.com',
+	})
+);
 app.use(cookieParser())
 
 // Controller(s)
-app.use('/users', /* authRequired, */ userRoutes);
+app.use('/users', authRequired, userRoutes);
 app.use('/register', register);
 app.use('/login', login);
 app.use('/logout', logout);
