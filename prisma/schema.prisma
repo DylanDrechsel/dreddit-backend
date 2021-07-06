@@ -65,6 +65,9 @@ model Post {
 
   // One to One // Post to Image
   image    Image?
+
+  // Image Url for amazon s3 image hosting
+  imageUrl String?
 }
 
 model Comment {
