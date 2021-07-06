@@ -7,6 +7,7 @@ import commentRoutes from './controllers/comments.js';
 import likeRoutes from './controllers/likes.js';
 import profileRoutes from './controllers/profile.js';
 import authRequired from './middleware/authRequired.js';
+import { generateUploadUrl } from './controllers/s3.js'
 import { register, login, logout } from './controllers/auth.js';
 import multer from 'multer';
 import cookieParser from 'cookie-parser'
@@ -44,6 +45,12 @@ app.use('/comments', authRequired, commentRoutes);
 app.use('/likes', authRequired, likeRoutes);
 app.use('/profile', authRequired, profileRoutes);
 
+app.get('/s3Url', /* authRequired, */ async (req, res) => {
+	const url = await generateUploadUrl()
+	res.send({url})
+})
+
+// MULTER GET IMAGE
 // Remove auth required so "img src" would return the image
 app.get('/image/:filename', /* authRequired, */ async (req, res) => {
 	const { filename } = req.params;

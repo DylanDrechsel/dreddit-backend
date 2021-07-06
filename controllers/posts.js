@@ -15,6 +15,7 @@ const upload = multer({
 });
 
 // GET 'NEW' ALL PUBLISHED POST
+// DEFAULT ROUTE ON WEBSITE LOAD
 router.get('/', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
@@ -64,6 +65,7 @@ router.get('/top', async (req, res) => {
 })
 
 // GET POST BY ID
+// POST DETAIL PAGE
 router.get('/:id', async (req, res) => {
     const post = await db.post.findUnique({
         where: {
@@ -84,6 +86,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // GET ALL UNPUBLISHED POST
+// NO WEBSITE USE YET?
 router.use('/allunpublished', async (req, res) => {
     const posts = await db.post.findMany({
         where: {
@@ -105,6 +108,7 @@ router.use('/allunpublished', async (req, res) => {
 })
 
 // GET USER UNPUBLISHED POST
+// USER PAGE UNPUBLISHED
 router.get('/user/unpublished', async (req, res) => {
     console.log(req.currentUser)
 
@@ -132,6 +136,7 @@ router.get('/user/unpublished', async (req, res) => {
 })
 
 // GET ALL USERS POSTS (FOR PROFILE SHOW POST PAGE)
+// USER PAGE PUBLISHED
 router.get("/user/published", async (req, res) => {
     const posts = await db.post.findMany({
 			select: {
@@ -169,11 +174,60 @@ router.post('/create', async (req, res) => {
     res.json({ message: 'Created Post', post: createdPost });
 })
 
+
+// UPDATE POST
+// USERPAGE EDIT POST
+router.put('/:id', async (req, res) => {
+    const updatedPost = await db.post.update({
+        where: {
+            id: Number(req.params.id)
+        },
+        data: req.body
+    })
+    res.json({ message: "the post has been updated", post: updatedPost });
+})
+
+// DELETE POST
+// USERPAGE DELETE POST
+router.delete('/:id', async (req, res) => {
+    const deletedPostLikes = await db.like.deleteMany({
+        where: {
+            posts: {
+                id: Number(req.params.id)
+            }
+        }
+    })
+    
+    const deletePostComments = await db.comment.deleteMany({
+        where: {
+            posts: {
+                id: Number(req.params.id) 
+            }
+        }
+    })
+    
+    const deletedPostImage = await db.image.deleteMany({
+        where: {
+            posts: {
+                id: Number(req.params.id) 
+            }
+        }
+    })
+    
+    const deletedPost = await db.post.delete({
+        where: {
+            id: Number(req.params.id)
+        }
+    })
+    res.json({ message: "the post has been deleted", post: deletedPost, likes: deletedPostLikes, comments: deletePostComments, image: deletedPostImage })
+})
+
+// MULTER
 // CREATE POST WITH IMAGE
 router.post(
-	'/create/image',
-	upload.single('image'),
-	async (req, res) => {
+    '/create/image',
+    upload.single('image'),
+    async (req, res) => {
         let bool = false
 
         if (req.body.published === 'true') {
@@ -182,7 +236,7 @@ router.post(
 
         const createdPost = await db.post.create({
             data: { title: req.body.title, category: req.body.category, published: bool, authorId: req.currentUser },
-		});
+        });
 
         const createdImage = await db.image.create({
             data: { ...req.file,
@@ -199,10 +253,14 @@ router.post(
             }
         })
 
-		res.json({ message: 'Created Post', post: createdPost, image: createdImage });
-	}
+        res.json({ message: 'Created Post', post: createdPost, image: createdImage });
+    }
 );
 
+// ALL MULTER ROUTES
+// NOT USED FOR S3 DEPLOYMENT
+
+// MULTER
 // TESTING JUST IMAGE UPLOAD
 router.post(
     '/create/single/image',
@@ -228,29 +286,30 @@ router.post(
             }
         })
 
-		res.json({ message: 'Created Post', image: createdImage });
-	}
+        res.json({ message: 'Created Post', image: createdImage });
+    }
 )
 
+// MULTER
 // UPDATE IMAGE POST
 router.put('/:postId/:imageId', upload.single('image'), async (req, res) => {
     let bool = false;
 
-	if (req.body.published === 'true') {
-		bool = true;
-	}
+    if (req.body.published === 'true') {
+        bool = true;
+    }
 
-	const updatedPost = await db.post.update({
-		where: {
-			id: Number(req.params.postId),
-		},
-		data: {
-			title: req.body.title,
-			category: req.body.category,
-			published: bool,
-			authorId: req.currentUser,
-		},
-	});
+    const updatedPost = await db.post.update({
+        where: {
+            id: Number(req.params.postId),
+        },
+        data: {
+            title: req.body.title,
+            category: req.body.category,
+            published: bool,
+            authorId: req.currentUser,
+        },
+    });
 
     const updatedImage = await db.image.update({
         where: {
@@ -258,54 +317,7 @@ router.put('/:postId/:imageId', upload.single('image'), async (req, res) => {
         },
         data: {...req.file}
     })
-	res.json({ message: 'the post has been updated', post: updatedPost, image: updatedImage/* createdImage, deletedImage: deletedPostImage */ });
+    res.json({ message: 'the post has been updated', post: updatedPost, image: updatedImage/* createdImage, deletedImage: deletedPostImage */ });
 });
-
-// UPDATE POST
-// ADD AUTH FOR THIS
-router.put('/:id', async (req, res) => {
-    const updatedPost = await db.post.update({
-        where: {
-            id: Number(req.params.id)
-        },
-        data: req.body
-    })
-    res.json({ message: "the post has been updated", post: updatedPost });
-})
-
-// DELETE POST
-// ADD AUTH FOR THIS
-router.delete('/:id', async (req, res) => {
-    const deletedPostLikes = await db.like.deleteMany({
-        where: {
-            posts: {
-                id: Number(req.params.id)
-            }
-        }
-    })
-
-    const deletePostComments = await db.comment.deleteMany({
-        where: {
-            posts: {
-                id: Number(req.params.id) 
-            }
-        }
-    })
-
-    const deletedPostImage = await db.image.deleteMany({
-        where: {
-            posts: {
-                id: Number(req.params.id) 
-            }
-        }
-    })
-
-    const deletedPost = await db.post.delete({
-        where: {
-            id: Number(req.params.id)
-        }
-    })
-    res.json({ message: "the post has been deleted", post: deletedPost, likes: deletedPostLikes, comments: deletePostComments, image: deletedPostImage })
-})
 
 export default router;
