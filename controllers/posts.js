@@ -222,7 +222,10 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: "the post has been deleted", post: deletedPost, likes: deletedPostLikes, comments: deletePostComments, image: deletedPostImage })
 })
 
-// MULTER
+
+// ALL MULTER ROUTES
+// NOT USED FOR S3 DEPLOYMENT
+
 // CREATE POST WITH IMAGE
 router.post(
     '/create/image',
@@ -256,9 +259,6 @@ router.post(
         res.json({ message: 'Created Post', post: createdPost, image: createdImage });
     }
 );
-
-// ALL MULTER ROUTES
-// NOT USED FOR S3 DEPLOYMENT
 
 // MULTER
 // TESTING JUST IMAGE UPLOAD
