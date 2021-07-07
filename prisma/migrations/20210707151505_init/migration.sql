@@ -5,8 +5,8 @@ CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "role" "Role" NOT NULL DEFAULT E'USER',
-    "firstname" TEXT NOT NULL,
-    "lastname" TEXT NOT NULL,
+    "firstname" TEXT,
+    "lastname" TEXT,
     "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -25,6 +25,8 @@ CREATE TABLE "Post" (
     "published" BOOLEAN NOT NULL DEFAULT false,
     "category" TEXT NOT NULL,
     "authorId" INTEGER NOT NULL,
+    "imageUrl" TEXT,
+    "imageKey" TEXT,
 
     PRIMARY KEY ("id")
 );

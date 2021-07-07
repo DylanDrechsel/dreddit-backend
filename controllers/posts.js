@@ -150,6 +150,8 @@ router.get("/user/published", async (req, res) => {
 				createdAt: true,
 				content: true,
 				published: true,
+                imageUrl: true,
+                imageKey: true
 			},
 			where: {
 				authorId: Number(req.currentUser),
@@ -164,6 +166,8 @@ router.get("/user/published", async (req, res) => {
 
 // CREATE POST
 router.post('/create', async (req, res) => {
+    // console.log(req)
+
     const createdPost = await db.post.create({
         data: {...req.body, author: {
             connect: {

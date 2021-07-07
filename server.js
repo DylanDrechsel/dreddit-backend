@@ -46,8 +46,8 @@ app.use('/likes', authRequired, likeRoutes);
 app.use('/profile', authRequired, profileRoutes);
 
 app.get('/s3Url', /* authRequired, */ async (req, res) => {
-	const url = await generateUploadUrl()
-	res.send({url})
+	const imageInfo = await generateUploadUrl()
+	res.send({imageInfo})
 })
 
 // MULTER GET IMAGE
