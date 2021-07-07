@@ -150,7 +150,8 @@ router.get("/user/published", async (req, res) => {
 				createdAt: true,
 				content: true,
 				published: true,
-                imageUrl: true
+                imageUrl: true,
+                imageKey: true
 			},
 			where: {
 				authorId: Number(req.currentUser),
