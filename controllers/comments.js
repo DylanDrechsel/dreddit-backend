@@ -28,6 +28,9 @@ router.get('/:id', async (req, res) => {
         where: {
            postId: Number(req.params.id)
         },
+        orderBy: {
+            createdAt: 'desc'
+        },
         include: {
             author: true,
             childComments: true
