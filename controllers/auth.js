@@ -67,6 +67,8 @@ const register = async (request, response) => {
 
 // POST Login Route
 const login = async (request, response) => {
+	console.log(request.body)
+
 	try {
 		const foundUser = await db.user.findUnique({
 			where: {
