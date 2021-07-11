@@ -72,8 +72,8 @@ Dreddit Backend is a REST API that stores and returns social media data for my w
                         "role": "USER",
                         "firstname": null,
                         "lastname": null,
-                        "username": "BubbaBlount",
-                        "email": "BubbaBlount",
+                        "username": "MikeTest",
+                        "email": "MikeTest",
                         "password": "$2a$10$e19Rh9g3F5WPPwC54SdRL.QQKnwhIuCstliXjFN/b45rAwfnliLAW",
                         "image": null
                     }
