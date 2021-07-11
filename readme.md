@@ -25,6 +25,14 @@ Dreddit Backend is a REST API that stores and returns social media data for my w
 - Allowing Users to Comment on other users Comments
 - User gets a notification when one of their post has been interacted with
 
+##If you would like to test Multer or change things around:
+
+- Fork and Clone this repository
+- Run `npm i` in the directory
+- Run `node server.js` in the directory
+- Open in your favorite code editor
+- Test with Postman
+
 ## Response for a Post with all its information
 ```
 {
