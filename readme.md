@@ -13,7 +13,7 @@ Deployed Frontend: <a href="https://master.dvzb15cl8s3db.amplifyapp.com/">Dreddi
 Dreddit Backend is a REST API that stores and returns social media data for my website Dreddit. I used Postgresql as my database with Prisma as my ORM. I used Express to set up my server through Nodejs. All routes were tested on Postman before deploying to the frontend.
 
 ## Key Features:
-- Used Amazons aws-sdk along with S3 to allow users to upload pictures to Dreddit while their hosted on Amazon S3 
+- Used Amazons aws-sdk along with S3 to allow users to upload pictures to Dreddit while being hosted on Amazon S3 
 - Used bcrypt to keep users password secure by hashing them before they are stored in the database
 - Used cookie-parser to attached the JWT to the cookies header and deliver it to the frontend
 - Used dotenv to keep secret variables for jsonwebtoken and AWS hidden from Github 
