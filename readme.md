@@ -9,13 +9,18 @@ Dreddit is a Reddit clone that allows users to have all the same CRUD functional
 ## Dreddit Backend:
 Dreddit Backend is a REST API that stores and returns social media data for my website Dreddit. I used Postgresql as my database with Prisma as my ORM. I used Express to set up my server through Nodejs. All routes were tested on Postman before deploying to the frontend.
 
-## Key features:
+## Key Features:
 - Used Amazons aws-sdk along with S3 to allow users to upload pictures to Dreddit while their hosted on Amazon S3 
 - Used bcrypt to keep users password secure by hashing them before they are stored in the database
 - Used cookie-parser to attached the JWT to the cookies header and deliver it to the frontend
 - Used dotenv to keep secret variables for jsonwebtoken and AWS hidden from Github 
 - Used cors to allow deployed frontend to communicate with the backend
-- Used multer to allow users to upload and store pictures in my postgresql database (NOTE: Had to remove this and replace with storing pictures on Amazon S3 because of an issue with Herkku. Code is still in repo but just commented out. If you wish to test just comment it back in and used the route for creating a post with the comment 'MULTER' above it.) 
+- Used multer to allow users to upload and store pictures in my postgresql database (NOTE: Had to remove this and replace with storing pictures on Amazon S3 because of an issue with Heroku. Code is still in repo but just commented out. If you wish to test just comment it back in and used the route for creating a post with the comment 'MULTER' above it.) 
+
+## Next Steps:
+- "Top" and "Hot" routes that will store the Post response by which post are the most popular or had the most interactions
+- Allowing Users to Comment on other users Comments
+- User gets a notification when one of their post has been interacted with
 
 ## Response for a Post with all its information
 ```
