@@ -21,7 +21,7 @@ Dreddit Backend is a REST API that stores and returns social media data for my w
 - Used multer to allow users to upload and store pictures in my postgresql database (NOTE: Had to remove this and replace with storing pictures on Amazon S3 because of an issue with Heroku. Code is still in repo but just commented out. If you wish to test just comment it back in and used the route for creating a post with the comment 'MULTER' above it.) 
 
 ## Next Steps:
-- "Top" and "Hot" routes that will store the Post response by which post are the most popular or had the most interactions
+- "Top" and "Hot" routes that will sort the Post response by which post are the most popular or had the most interactions
 - Allowing Users to Comment on other users Comments
 - User gets a notification when one of their post has been interacted with
 
