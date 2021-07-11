@@ -7,7 +7,7 @@
 Dreddit is a Reddit clone that allows users to have all the same CRUD functionality that one would have on Reddit. Users must create an account to get authenticated and once created are able to sign in and use the functionality of Dreddit. Users can create and edit posts, upload images, comment on other users’ posts, save post for later that they are able to access, and I even implemented the upvote/downvote system that Reddit has. I tried to make the HTML in Dreddit look as much as Reddit as possible. Post pictures you want people to see or use Dreddit as an outlet to talk about all your passions. All are welcome here!
 
 ## Dreddit Backend:
-Dreddit Backend is a REST API that stores and returns social media data for my website Dreddit. I used Postgresql as my database with Prisma as my ORM. I use Nodejs to run my server will running the routes through Express. All routes were tested on Postman before deploying to the frontend.
+Dreddit Backend is a REST API that stores and returns social media data for my website Dreddit. I used Postgresql as my database with Prisma as my ORM. I used Express to set up my server through Nodejs. User authentication using JsonWebTokens and Cookie Parser. All routes were tested on Postman before deploying to the frontend.
 
 ## Key features:
 - Used Amazons aws-sdk along with S3 to allow users to upload pictures to Dreddit while their hosted on Amazon S3 
@@ -15,6 +15,76 @@ Dreddit Backend is a REST API that stores and returns social media data for my w
 - Used cookie-parser to attached the JWT to the cookies header and deliver it to the frontend
 - Used dotenv to keep secret variables for jsonwebtoken and AWS hidden from Github 
 
+
+
+## Response for a Post with all its information
+```
+{
+    "posts": [
+            {
+            "id": 1,
+            "createdAt": "2021-07-08T18:27:41.308Z",
+            "updatedAt": "2021-07-08T18:27:41.308Z",
+            "title": "Look at this cool photo!",
+            "content": null,
+            "published": true,
+            "category": "Photos",
+            "authorId": 1,
+            "imageUrl": "https://dreddit-images.s3.us-east-2.amazonaws.com/47251aded226cefc9bb4bc21f2872a97",
+            "imageKey": "47251aded226cefc9bb4bc21f2872a97",
+            "author": {
+                "id": 1,
+                "role": "USER",
+                "firstname": null,
+                "lastname": null,
+                "username": "ADMINBLOUNT",
+                "email": "ADMINBLOUNT",
+                "password": "$2a$10$x/7d9wA.PpBtV4eygZmsEeMWxoUsimPKYvzrQB2HQr8JIz5EXP76m",
+                "image": null
+            },
+            "comments": [
+                {
+                    "id": 1,
+                    "createdAt": "2021-07-09T11:26:17.638Z",
+                    "updatedAt": "2021-07-09T11:26:17.639Z",
+                    "content": "Sick Photo!!",
+                    "authorId": 2,
+                    "postId": 1,
+                    "parentCommentId": null,
+                    "author": {
+                        "id": 2,
+                        "role": "USER",
+                        "firstname": null,
+                        "lastname": null,
+                        "username": "BubbaBlount",
+                        "email": "BubbaBlount",
+                        "password": "$2a$10$e19Rh9g3F5WPPwC54SdRL.QQKnwhIuCstliXjFN/b45rAwfnliLAW",
+                        "image": null
+                    }
+                }
+            ],
+            "likes": [
+                {
+                    "id": 2,
+                    "createdAt": "2021-07-08T20:08:27.323Z",
+                    "updatedAt": "2021-07-08T20:08:27.324Z",
+                    "value": 1,
+                    "postId": 1,
+                    "authorId": 1
+                },
+                {
+                    "id": 3,
+                    "createdAt": "2021-07-09T11:26:27.563Z",
+                    "updatedAt": "2021-07-09T11:26:27.564Z",
+                    "value": 1,
+                    "postId": 1,
+                    "authorId": 2
+                }
+            ],
+        }
+    ]
+}   
+```
 
 
 
