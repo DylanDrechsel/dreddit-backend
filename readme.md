@@ -85,3 +85,35 @@ Dreddit Backend is a REST API that stores and returns social media data for my w
     ]
 }   
 ```
+
+## User Schema
+```
+model User {
+  id         Int     @id @default(autoincrement())
+  role       Role    @default(USER)
+  firstname  String?
+  lastname   String?
+  username   String  @unique
+  email      String  @unique
+  password   String
+  image      String?
+
+  // user profile relation - One to One
+  profile    Profile?
+
+  // all posts user has made - One to Many
+  posts      Post[]
+
+  // all comments user has made - One to Many
+  comments   Comment[]
+
+  // all likes the users has made - One to Many
+  likes      Like[]
+
+  // all images the user has posted - One to Many
+  images     Image[]
+
+  // all comments on comments the User has made - One to Many
+  childComments ChildComment[]
+}
+```
